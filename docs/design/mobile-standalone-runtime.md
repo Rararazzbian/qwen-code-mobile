@@ -36,7 +36,7 @@ Android app (com.qwen.mobile)
 ### Runtime
 
 - **proot** from Termux's Android build provides a user-space chroot through `ptrace`, so a standard Linux distribution runs without root.
-- **Alpine Linux 3.24 aarch64** minirootfs (≈4 MB) is the guest. Its `nodejs` package is Node 24, which satisfies the repository's `>=22` requirement. The first launch runs `apk add nodejs bash git ripgrep ca-certificates` (≈60 MB download). Later, the agent can install more tools itself with `apk add`.
+- **Alpine Linux 3.24 aarch64** minirootfs (≈4 MB) is the guest. Its `nodejs` package is Node 24, which satisfies the repository's `>=22` requirement. The first launch runs `apk add nodejs bash git ripgrep ca-certificates` (about 100 MB once installed). Later, the agent can install more tools itself with `apk add`.
 - **Qwen Code** is this repository's `npm run bundle` output, shipped in the APK and unpacked to `/opt/qwen-code`. It is replaced only when the bundled version hash changes.
 
 ### Executing binaries on Android 10+
@@ -102,7 +102,8 @@ A native Jetpack Compose UI over the daemon API:
 ## Validation Evidence
 
 - Unit tests (`./gradlew :app:testDebugUnitTest`) cover the proot invocation and archive extraction.
-- The debug APK builds in CI-like Linux environments.
+- The debug APK (48 MB) builds with `./gradlew :app:assembleDebug`.
+- An x86_64 replica of the guest validates the parts that are not Android-specific: the app's archive extractor reproduces the Alpine 3.24 root filesystem (apart from the sticky bit on `/tmp` and `/var/tmp`) and the bundle byte for byte. In that tree, `apk add` installs Node 24.22.3, and `qwen serve --require-auth` answers `/health` within 2 seconds, returns 401 without the token, serves the Web Shell and creates an agent session through `POST /session`. Busybox `env -u` removes the proot variables. The replica uses `chroot`, not proot, and x86_64, not aarch64.
 - On-device behavior in the test plan above is not yet verified.
 
 ## Follow-ups

@@ -53,9 +53,9 @@ patchelf --remove-rpath --replace-needed libtalloc.so.2 libtalloc.so "$JNI/libpr
 patchelf --remove-rpath --set-soname libtalloc.so "$JNI/libtalloc.so"
 patchelf --remove-rpath "$JNI/libandroid-shmem.so"
 
-cp "$CACHE/alpine-minirootfs-3.24.4-aarch64.tar.gz" "$ASSETS/rootfs.tar.gz"
-tar czf "$ASSETS/qwen-code.tar.gz" -C "$QWEN_DIST" .
-(cd "$ASSETS" && sha256sum qwen-code.tar.gz | cut -c1-16 >qwen-code.version)
+cp "$CACHE/alpine-minirootfs-3.24.4-aarch64.tar.gz" "$ASSETS/rootfs.tgz"
+tar czf "$ASSETS/qwen-code.tgz" -C "$QWEN_DIST" .
+(cd "$ASSETS" && sha256sum qwen-code.tgz | cut -c1-16 >qwen-code.version)
 
 echo "Runtime staged:"
 ls -la "$JNI" "$ASSETS"

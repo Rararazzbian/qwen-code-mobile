@@ -23,6 +23,9 @@ android {
             isMinifyEnabled = false
         }
     }
+    androidResources {
+        noCompress += "tgz"
+    }
     packaging {
         // The runtime binaries must be extracted to nativeLibraryDir, the only
         // app-writable location Android allows executing from.

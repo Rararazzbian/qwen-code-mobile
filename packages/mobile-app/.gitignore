@@ -4,3 +4,4 @@ local.properties
 .runtime-cache/
 app/src/main/jniLibs/
 app/src/main/assets/runtime/
+*.hprof

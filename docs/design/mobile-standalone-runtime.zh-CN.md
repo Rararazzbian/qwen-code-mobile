@@ -36,7 +36,7 @@ Android app (com.qwen.mobile)
 ### 运行时
 
 - 来自 Termux Android 构建的 **proot** 通过 `ptrace` 提供用户态 chroot，因此无需 root 即可运行标准 Linux 发行版。
-- 客户系统为 **Alpine Linux 3.24 aarch64** minirootfs（约 4 MB）。其 `nodejs` 软件包为 Node 24，满足仓库 `>=22` 的要求。首次启动运行 `apk add nodejs bash git ripgrep ca-certificates`（约 60 MB 下载）。之后智能体可以自行用 `apk add` 安装更多工具。
+- 客户系统为 **Alpine Linux 3.24 aarch64** minirootfs（约 4 MB）。其 `nodejs` 软件包为 Node 24，满足仓库 `>=22` 的要求。首次启动运行 `apk add nodejs bash git ripgrep ca-certificates`（安装后约 100 MB）。之后智能体可以自行用 `apk add` 安装更多工具。
 - **Qwen Code** 使用本仓库 `npm run bundle` 的输出，随 APK 分发并解压到 `/opt/qwen-code`。仅当打包版本哈希变化时才替换。
 
 ### 在 Android 10+ 上执行二进制文件
@@ -102,7 +102,8 @@ Android 的 SELinux 策略禁止应用访问部分 `/proc` 文件，例如 `/pro
 ## 验证证据
 
 - 单元测试（`./gradlew :app:testDebugUnitTest`）覆盖 proot 调用和归档解压。
-- 调试版 APK 可在类 CI 的 Linux 环境中构建。
+- 调试版 APK（48 MB）可通过 `./gradlew :app:assembleDebug` 构建。
+- 客户系统的 x86_64 复制环境验证了与 Android 无关的部分：应用的归档解压器逐字节还原了 Alpine 3.24 根文件系统（`/tmp` 和 `/var/tmp` 的粘滞位除外）和 bundle。在该目录树中，`apk add` 安装了 Node 24.22.3，`qwen serve --require-auth` 在 2 秒内响应 `/health`，无令牌时返回 401，提供 Web Shell，并通过 `POST /session` 创建智能体会话。Busybox `env -u` 会移除 proot 变量。该复制环境使用 `chroot` 而非 proot，并且是 x86_64 而非 aarch64。
 - 上述测试计划中的设备端行为尚未验证。
 
 ## 后续工作

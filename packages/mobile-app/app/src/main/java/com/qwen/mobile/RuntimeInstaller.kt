@@ -15,7 +15,7 @@ class RuntimeInstaller(
     fun ensureInstalled() {
         if (!File(rootfs, "bin/busybox").exists()) {
             RuntimeState.log("Unpacking Alpine Linux…")
-            extractAsset("runtime/rootfs.tar.gz", rootfs)
+            extractAsset("runtime/rootfs.tgz", rootfs)
             File(rootfs, "etc/resolv.conf").writeText("nameserver 8.8.8.8\nnameserver 1.1.1.1\n")
             File(rootfs, "etc/hosts").writeText("127.0.0.1 localhost\n::1 localhost\n")
         }
@@ -29,7 +29,7 @@ class RuntimeInstaller(
         val marker = File(qwenDir, ".bundle-version")
         if (!marker.exists() || marker.readText() != version) {
             RuntimeState.log("Installing Qwen Code bundle $version…")
-            extractAsset("runtime/qwen-code.tar.gz", qwenDir)
+            extractAsset("runtime/qwen-code.tgz", qwenDir)
             marker.writeText(version)
         }
         File(rootfs, "root/projects").mkdirs()

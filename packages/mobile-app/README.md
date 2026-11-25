@@ -21,7 +21,7 @@ The APK is `app/build/outputs/apk/debug/app-debug.apk`. It supports arm64 (`arm6
 ## Use
 
 1. Enter an OpenAI-compatible API base URL, API key and model (for example DashScope's `https://dashscope-intl.aliyuncs.com/compatible-mode/v1` with `qwen3-coder-plus`).
-2. Tap **Start**. The first start unpacks Alpine and downloads about 60 MB of packages, so it needs a network connection.
+2. Tap **Start**. The first start unpacks Alpine and installs about 100 MB of packages, so it needs a network connection. With the unpacked Qwen Code bundle, expect about 300 MB of storage in total.
 3. Tap **Allow running in background** once, so Android does not defer network access while the screen is off.
 4. When the status is `running`, tap **Open Web Shell**. Projects live under `/root/projects` inside the guest.
 5. Stop the runtime from the app or the notification. **Copy log** copies the runtime log for bug reports.
