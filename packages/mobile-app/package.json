@@ -1,0 +1,6 @@
+{
+  "name": "@qwen-code/mobile-app",
+  "version": "0.23.3",
+  "private": true,
+  "description": "Standalone Android app that runs Qwen Code on the device"
+}

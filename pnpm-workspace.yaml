@@ -25,6 +25,7 @@ packages:
   - 'integrations/generated-ui'
   - '!packages/desktop'
   - '!packages/live-host'
+  - '!packages/mobile-app'
   - '!packages/mobile-shell'
 
 # npm links every workspace package into the root node_modules; pnpm links
